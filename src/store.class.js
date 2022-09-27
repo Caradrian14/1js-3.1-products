@@ -24,14 +24,14 @@ class Store{
 
 
     getCategoryByName(name){
-        var categoryToFind = this.categories.find(category => category.name == name)
+        var categoryToFind = this.categories.find(category => category.name.toLowerCase() == name.toLowerCase())
         if(categoryToFind !== undefined){
             return categoryToFind;
         }
         throw "No encontrado";
     }
 
-    getProductsById(id){
+    getProductById(id){
         var productToFind = this.products.find(products => products.id === id)
         if(productToFind !== undefined){
             return productToFind;
@@ -77,7 +77,6 @@ class Store{
     }
 
     addProduct(payload){
-        //Errores
         if(!payload.name || 
             !payload.category || 
             !payload.price ||
@@ -86,7 +85,6 @@ class Store{
             typeof(payload.price) !== "number"||
             typeof(payload.units) === "boolan" ||
             typeof(payload.units) === "string"
-            
             ){
                 throw "Datos incorrectos";
             }
@@ -96,9 +94,9 @@ class Store{
         category = this.getCategoryById(payload.category);
         
         //definimos el maximo id
-        // var maxId = this.categories.reduce((max, categoriaActual) => 
-        // categoriaActual.id > max? categoriaActual.id : max, 0);
-        
+         //var maxId = this.categories.reduce((max, categoriaActual) => 
+         //categoriaActual.id > max? categoriaActual.id : max, 0);
+
         var enconctrarMax = function(array){
             var max = 0;
             array.forEach(element => {
@@ -109,41 +107,49 @@ class Store{
             return max;
         }
         var maximoId = enconctrarMax(this.products);
+
         //Construir el objeto
         var newProduct = new Product(maximoId +1, payload.name, payload.category, payload.price, payload.units);
         this.products.push(newProduct);
         return newProduct;
-        
     }
 
     delCategory(id){
-        var categoryToFind = this.getCategoryById(id);
-        var prodWithCateg = this.products.filter(product => product.category === id);
-        if(prodWithCateg.length !== 0){
-            throw "Error, hay productos con esta categoria";
+        var categoryToEliminate = this.getCategoryById(id);
+        if(this.getProductsByCategory(id).length === 0){
+            this.categories = this.categories.filter(category => category.id != id);
+            return categoryToEliminate;
         }
-        var indexToDelete = this.category.indexOf(categoryToFind);
-        this.category.splice(indexToDelete,1);
-        return categoryToFind
+        throw "Error";
     }
 
     delProduct(id){
-        Product
+        var productToEliminate = this.getProductById(id);
+        if(productToEliminate.units < 1){
+            this.products = this.products.filter(product => product.id != id);
+            return productToEliminate;
+        }
+        throw "Error";
     }
 
     totalImport(){
-        //return import
+        
     }
 
-    orderByUnits(){
+    orderByUnitsDesc(){
         //Product{}
+        let sortByUnits = this.products.sort((element1, element2)  => element2.units - element1.units);
+        return sortByUnits;
     }
 
     orderByName(){
-        //Product[]
+        let sortByName = this.products.sort((element1, element2)  => element1.name.localeCompare(element2.name));
+        return sortByName;
     }
 
     underStock(units){
+        var productsBelowUnits = this.products.filter(product => product.units < units);
+        return productsBelowUnits;
         //Product[]
     }
 

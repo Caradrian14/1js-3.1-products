@@ -42,6 +42,7 @@ try {
 
 // Eliminamos el producto
 try {
+    myStore.delCategory(2);
     myStore.delProduct(usb.id)
 } catch(err) {
     console.error(err)
