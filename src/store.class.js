@@ -94,13 +94,14 @@ class Store{
         category = this.getCategoryById(payload.category);
         
         //definimos el maximo id
-         //var maxId = this.categories.reduce((max, categoriaActual) => 
-         //categoriaActual.id > max? categoriaActual.id : max, 0);
+        //Este codigo da error en los test.
+        //var maximoId = this.categories.reduce((max, categoriaActual) => 
+        //categoriaActual.id > max? categoriaActual.id : max, 0);
 
         var enconctrarMax = function(array){
             var max = 0;
             array.forEach(element => {
-                if(element.id > 0){
+                if(element.id > max){
                     max = element.id;
                 }
             });
@@ -133,11 +134,11 @@ class Store{
     }
 
     totalImport(){
-        
+        let importe = this.products.reduce((total, producto) => total += (producto.units * producto.price));
+        return importe;
     }
 
     orderByUnitsDesc(){
-        //Product{}
         let sortByUnits = this.products.sort((element1, element2)  => element2.units - element1.units);
         return sortByUnits;
     }
@@ -150,11 +151,13 @@ class Store{
     underStock(units){
         var productsBelowUnits = this.products.filter(product => product.units < units);
         return productsBelowUnits;
-        //Product[]
     }
 
     toString(){
-
+        return  this.name + " => " + this.products.length + ": " + this.totalImport + " \n" +
+        this.products.forEach(element => {
+            "- " + element.name + ": " + element.units + " uds. x" + element.price + " €/u = " + (element.price * element.units);
+        });
     }
 }
 
