@@ -1,4 +1,5 @@
 'use strict';
+const json = require ('../datosIni.json');
 
 const { prototype } = require('./category.class');
 const Category = require('./category.class');
@@ -12,6 +13,11 @@ class Store{
         this.products = [];
         this.categories = [];
     
+    }
+
+    loadData(){
+        json.categories.forEach(categoria => {this.addCategory(categoria.name, categoria.description)});
+        json.products.forEach(product => {this.addProduct(product)});
     }
 
     getCategoryById(id){

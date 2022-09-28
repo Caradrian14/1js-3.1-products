@@ -14,6 +14,8 @@ try {
 }
 
 try {
+    myStore.loadData();
+
     var tv = myStore.addProduct({ 
         name: 'TV Samsung MP45', 
         category: catInformatica.id, 
