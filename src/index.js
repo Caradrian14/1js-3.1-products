@@ -1,61 +1,60 @@
 'use strict'
 
-// Creamos un nuevo almacén con id 1
-// Antes hemos haber importado la clase Store para poder usarla
-const Store = require('./store.class');
-const myStore = new Store(1, 'Almacén de ACME')
+// Aquí importaremos la clase del controlador e instanciaremos uno
+const Controller = require('./controller/controller.class');
+const myController = new Controller();
+myController.init();
 
-// Añadimos los objetos
-try {
-    var catInformatica = myStore.addCategory('Informática')
-    var catInformatica2 = myStore.addCategory('Informática2')
-} catch(err) {
-    console.error(err)
-}
+// A continuación crearemos una función manejadora para cada formulario
+window.addEventListener('load', () => {
 
-try {
-    myStore.loadData();
+  // función manejadora del formulario 'new-prod'
+  document.getElementById('new-prod').addEventListener('submit', (event) => {
+    event.preventDefault()
 
-    var tv = myStore.addProduct({ 
-        name: 'TV Samsung MP45', 
-        category: catInformatica.id, 
-        price: 345.95, 
-        units: 3
-    })
-    var abaco = myStore.addProduct({ 
-        name: 'Ábaco de madera', 
-        category: catInformatica.id, 
-        price: 245.95, 
-        units: 45
-    })
-    var impr = myStore.addProduct({ 
-        name: 'impresora Epson LX-455', 
-        category: catInformatica.id, 
-        price: 45.95
-    })
-    var usb = myStore.addProduct({ 
-        name: 'USB Kingston 16GB', 
-        category: catInformatica.id, 
-        price: 5.95
-    })
-} catch(err) {
-    console.error(err)
-}
+    // Aquí el código para obtener los datos del formulario
+    const name = document.getElementById('newprod-name').value;
+    const price = parseInt(document.getElementById('newprod-price').value);
+    const category = document.getElementById('newprod-cat').value;
+    const units = parseInt(document.getElementById('newprod-units').value);
+    
+    
 
-// Eliminamos el producto
-try {
-    myStore.delCategory(2);
-    myStore.delProduct(usb.id)
-} catch(err) {
-    console.error(err)
-}
+    // Aquí llamamos a la función del controlador que añade productos (addProductToStore)
+    // pasándole como parámetro esos datos
+    myController.addProductToStore({ name, category, price, units })   
 
-// Mostramos por consola todo lo que nos piden
-console.log('LISTADO DEL ALMACÉN por existencias')
-myStore.orderByUnitsDesc().forEach(prod=>console.log('- '+prod))
+    // Sintaxis de ES2015 que equivale a 
+    //
+    // myController.addProductToStore(
+    //   { 
+    //     name: name,
+    //     price: price 
+    //   }
+    // )
 
-console.log('LISTADO DEL ALMACÉN por nombre')
-myStore.orderByName().forEach(prod=>console.log('- '+prod))
+  })
 
-console.log('LISTADO DE PRODUCTOS CON POCAS EXISTENCIAS')
-myStore.underStock(10).forEach(prod=>console.log('- '+prod))
+
+
+  document.getElementById('del-prod').addEventListener('submit', (event) => {
+    event.preventDefault()
+
+    myController.deleteProductFromStore(parseInt(document.getElementById('delprod-id').value));      
+  })
+
+  document.getElementById('add-cat').addEventListener('submit', (event) => {
+    event.preventDefault()
+    const nameCat = document.getElementById('addcat-name').value;
+    const descCat = document.getElementById('addcat-desc').value;
+    myController.addCategoryFromStore({nameCat, descCat});      
+  })
+
+
+  
+  document.getElementById('del-cat').addEventListener('submit', (event) => {
+    event.preventDefault()
+
+    myController.deleteCategoryFromStore(parseInt(document.getElementById('delcat-id').value));      
+  })
+})

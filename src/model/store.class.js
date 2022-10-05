@@ -1,5 +1,5 @@
 'use strict';
-const json = require ('../datosIni.json');
+const json = require ('./datosIni.json');
 
 const { prototype } = require('./category.class');
 const Category = require('./category.class');
@@ -96,7 +96,6 @@ class Store{
             }
         //Compribamos si existe Categoria, lanzaria Error en get
         var category
-        
         category = this.getCategoryById(payload.category);
         
         //definimos el maximo id
@@ -120,7 +119,7 @@ class Store{
         this.products.push(newProduct);
         return newProduct;
     }
-
+    
     delCategory(id){
         var categoryToEliminate = this.getCategoryById(id);
         if(this.getProductsByCategory(id).length === 0){
@@ -140,8 +139,8 @@ class Store{
     }
 
     totalImport(){
-        let importe = this.products.reduce((total, producto) => total += (producto.units * producto.price));
-        return importe;
+        let importe = this.products.reduce((total, producto) => total += (producto.units * producto.price), 0);
+        return importe.toFixed(2);
     }
 
     orderByUnitsDesc(){
