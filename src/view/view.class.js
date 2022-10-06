@@ -3,17 +3,9 @@
 const Controller = require("../controller/controller.class");
 
 class View{
-    init(){
-        //const errMessege = getElementsByClassName('alert-dander');
-        //errMessege.classList.add('.d-none');
-    }
+    init(){}
 
-    // renderNewProduct2(prod){
-    //     //let tbody = document.getElementsByTagName('tbody');
-    //     let newTr = document.createElement('tr');
-    //     newTr.innerHTML+=("<td>"+ prod.id + "</td><td>" + prod.name +"</td><td>" + prod.category + "</td><td>" + prod.units + "</td><td>" + prod.price + " €/u</td><td>" + prod.productImport() +" €</td><td></td>")
-    //     document.getElementsByTagName('tbody').appendChild(newTr);
-    // }
+    
 
     renderNewProduct(prod){
         let newTrObject = document.createElement('tr');
@@ -39,19 +31,12 @@ class View{
         divAlert.setAttribute("role", "alert");
         divAlert.innerHTML = (err +
              `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="this.parentElement.remove()"></button>`);
-        messageDiv.appendChild(divAlert);
-        
+        setTimeout(messageDiv.appendChild(divAlert), 5000);
+        setTimeout(deleteMns, 5000);
+        function deleteMns(){
+            divAlert.remove();
+        }
     }
-
-    // addProduct(product){
-    //     let tbody = getElementById("tableProducts");
-    //     let newRow = tbody.createElement("tr");
-    //     newRow.setAttribute("id", product.id);
-    //     let elementsRow = newRow.createElement("<td>" + product.id + "</td><td>" +
-    //     product.name + "</td><td>" + product.category + "</td><td>" + product.price +
-    //     + "</td><td>" + product.units + "</td><td>" + product.productImport() + "</td><td>" + "</td>");
-    //     tbody.append(elementsRow);
-    // }
 
     renderTotalImport(totalImport){
         let thImportTotal = document.getElementById("totalImport");
