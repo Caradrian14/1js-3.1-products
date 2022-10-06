@@ -28,6 +28,7 @@ class Controller{
             const newProd = this.prodctStore.addProduct(newProduct);
             this.viewStore.renderNewProduct(newProd);
             console.log("objeto añadido");
+            this.calculateTotalImport();
         }catch(err){
             this.viewStore.renderMessege(err)
         }        
@@ -62,6 +63,7 @@ class Controller{
         try{
             this.prodctStore.delProduct(idProduct);
             this.viewStore.delProduct(idProduct);
+            this.calculateTotalImport();
         }catch(err){
             this.viewStore.renderMessege(err)
         }

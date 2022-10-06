@@ -55,7 +55,7 @@ class View{
 
     renderTotalImport(totalImport){
         let thImportTotal = document.getElementById("totalImport");
-        thImportTotal.textContent += (totalImport + " €");
+        thImportTotal.textContent = (totalImport + " €");
     }
 
     addCategories(categories){

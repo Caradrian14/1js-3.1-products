@@ -126,7 +126,7 @@ class Store{
             this.categories = this.categories.filter(category => category.id != id);
             return categoryToEliminate;
         }
-        throw "Error";
+        throw "Error, la categoria tiene productos registrados";
     }
 
     delProduct(id){
@@ -135,7 +135,7 @@ class Store{
             this.products = this.products.filter(product => product.id != id);
             return productToEliminate;
         }
-        throw "Error";
+        throw "Error, el producto tiene unidades en Stock";
     }
 
     totalImport(){
