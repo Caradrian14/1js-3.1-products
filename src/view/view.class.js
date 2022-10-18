@@ -120,7 +120,6 @@ class View{
 
     apperCategoryListView(){
         this.hideAllElements();
-        document.getElementById('new-prod').parentElement.classList.remove('hideElement');
         document.getElementById("messages").innerHTML = "<h1>Listado Categorias</h1><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero tempore alias eum officiis deserunt distinctio sint tenetur quod ex adipisci sit deleniti recusandae accusantium, corrupti quaerat nostrum officia nobis! Pariatur?</p>"
     }
 }
