@@ -8,7 +8,8 @@
 	<meta name="keywords" content="JavaScript, Ejercicio, HTML5, DAW">
 	<!-- CSS only -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -73,94 +74,92 @@
             </div>
         </div>
 
-
-		        <!-- Acciones sobre el almacén -->
-				<div class="row">
-					<div class="col-sm-6 col-md-4 col-lg-4">
-						<form id="new-prod">
-							<fieldset>
-								<legend class="bg-dark text-white text-center">Añadir producto</legend>
-								<!-- Aquí los inputs y botones del form -->
-								<div class="form-group">
-									<label for="newprod-id">ID:</label>
-									<input type="text" class="form-control" disabled>
-								</div>
-								<div class="form-group">
-									<label for="newprod-name">Nombre:</label>
-									<input type="text" id="newprod-name" class="form-control">
-								</div>
-								<div class="form-group">
-									<label for="newprod-cat">Categoría:</label>
-									<select class="form-control" id="newprod-cat">
-										<option value="" disabled>--- Selecciona categoría ---</option>
-										</select>
-								</div>
-
-								<div class="form-group">
-									<label for="newprod-units">Unidades.:</label>
-									<input type="number" id="newprod-units" class="form-control">
-								</div>
-								<div class="form-group">
-									<label for="newprod-price">Precio/u.:</label>
-									<input type="number" id="newprod-price" class="form-control">
-								</div>
-								<br>
-								<button type="submit" class="btn btn-default btn-dark">Añadir</button>
-								<button type="reset" class="btn btn-danger">Reset</button>
-							</fieldset>
-						</form>
-					</div>
-					<div class="col-sm-6 col-md-4 col-lg-4">
-						<form id="add-cat">
-							<fieldset>
-								<legend class="bg-dark text-white text-center">Añadir categoría</legend>
-								<div class="form-group">
-									<label for="addcat-name">Nombre:</label>
-									<input type="text" id="addcat-name" class="form-control">
-								</div>
-								<br>
-								<div class="form-group">
-									<label for="addcat-desc">Descripción:</label>
-									<input type="text" id="addcat-desc" class="form-control">
-								</div>
-								<br>
-								<button type="submit" class="btn btn-default btn-dark">Añadir</button>
-								<button type="reset" class="btn btn-danger">Reset</button>
-							</fieldset>
-						</form>
-					</div>
-					<div class="col-sm-6 col-md-4 col-lg-4">
-						<form id="del-prod">
-							<fieldset>
-								<legend class="bg-dark text-white text-center">Eliminar producto</legend>
-								<!-- Aquí los inputs y botones del form -->
-								<div class="form-group">
-									<label for="delprod-id">ID:</label>
-									<input type="text" id="delprod-id" class="form-control">
-								</div>
-								<br>
-								<button type="submit" class="btn btn-default btn-dark">Eliminar</button>
-								<button type="reset" class="btn btn-danger">Reset</button>
-							</fieldset>
-						</form>
+		<!-- Acciones sobre el almacén -->
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-lg-4 hideElement">
+				<form id="new-prod">
+					<fieldset>
+						<legend class="bg-dark text-white text-center">Edición producto</legend>
+						<!-- Aquí los inputs y botones del form -->
+						<div class="form-group">
+							<label for="newprod-id">ID:</label>
+							<input type="text" id="newprod-id" class="form-control" disabled>
+						</div>
+						<div class="form-group">
+							<label for="newprod-name">Nombre:</label>
+							<input type="text" id="newprod-name" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="newprod-cat">Categoría:</label>
+							<select class="form-control" id="newprod-cat">
+								<option value="" disabled>--- Selecciona categoría ---</option>
+								</select>
+						</div>
+						<div class="form-group">
+							<label for="newprod-units">Unidades.:</label>
+							<input type="number" id="newprod-units" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="newprod-price">Precio/u.:</label>
+							<input type="number" id="newprod-price" class="form-control">
+						</div>
 						<br>
-						<form id="del-cat">
-							<fieldset>
-								<legend class="bg-dark text-white text-center">Eliminar categoría</legend>
-								<div class="form-group">
-									<label for="delcat-id">ID:</label>
-									<input type="text" id="delcat-id" class="form-control">
-								</div>
-								<br>
-								<button type="submit" class="btn btn-default btn-dark">Eliminar</button>
-								<button type="reset" class="btn btn-danger">Reset</button>
-							</fieldset>
-						</form>
-					</div>
-				</div>
-		
+						<button type="submit" class="btn btn-default btn-dark">Aplicar</button>
+						<button type="reset" class="btn btn-danger">Reset</button>
+					</fieldset>
+				</form>
+			</div>
+			<div class="col-sm-6 col-md-4 col-lg-4 hideElement">
+				<form id="add-cat">
+					<fieldset>
+						<legend class="bg-dark text-white text-center">Añadir categoría</legend>
+						<div class="form-group">
+							<label for="addcat-name">Nombre:</label>
+							<input type="text" id="addcat-name" class="form-control">
+						</div>
+						<br>
+						<div class="form-group">
+							<label for="addcat-desc">Descripción:</label>
+							<input type="text" id="addcat-desc" class="form-control">
+						</div>
+						<br>
+						<button type="submit" class="btn btn-default btn-dark">Añadir</button>
+						<button type="reset" class="btn btn-danger">Reset</button>
+					</fieldset>
+				</form>
+			</div>
+			<div class="col-sm-6 col-md-4 col-lg-4 hideElement">
+				<form id="del-prod">
+					<!-- <fieldset>
+						<legend class="bg-dark text-white text-center">Eliminar producto</legend>
+						<!-- Aquí los inputs y botones del form -->
+						<!--<div class="form-group">
+							<label for="delprod-id">ID:</label>
+							<input type="text" id="delprod-id" class="form-control">
+						</div>
+						<br>
+						<button type="submit" class="btn btn-default btn-dark">Eliminar</button>
+						<button type="reset" class="btn btn-danger">Reset</button>
+					</fieldset> -->
+				</form>
+				<br>
+				<form id="del-cat">
+					<fieldset>
+						<legend class="bg-dark text-white text-center">Eliminar categoría</legend>
+						<div class="form-group">
+							<label for="delcat-id">ID:</label>
+							<input type="text" id="delcat-id" class="form-control">
+						</div>
+						<br>
+						<button type="submit" class="btn btn-default btn-dark">Eliminar</button>
+						<button type="reset" class="btn btn-danger">Reset</button>
+					</fieldset>
+				</form>
+			</div>
+		</div>
 		
 	<footer><small>Diseño Web en Entorno Cliente - Juan Segura</small></footer>
     <script src="./dist/main.js"></script>
+	
 </body>
 </html>

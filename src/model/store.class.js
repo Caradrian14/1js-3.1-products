@@ -15,6 +15,20 @@ class Store{
     
     }
 
+    sum1UnitToProd(idProd){
+        let prod = this.getProductById(idProd);
+        prod.units++;
+        return prod;
+    }
+
+    extract1UnitToProd(idProd){
+        let prod = this.getProductById(idProd);
+        if(prod.units > 0){
+            prod.units--;
+        }
+        return prod;
+    }
+
     loadData(){
         json.categories.forEach(categoria => {this.addCategory(categoria.name, categoria.description)});
         json.products.forEach(product => {this.addProduct(product)});
@@ -99,9 +113,6 @@ class Store{
         category = this.getCategoryById(payload.category);
         
         //definimos el maximo id
-        //Este codigo da error en los test.
-        //var maximoId = this.categories.reduce((max, categoriaActual) => 
-        //categoriaActual.id > max? categoriaActual.id : max, 0);
 
         var enconctrarMax = function(array){
             var max = 0;
@@ -120,6 +131,15 @@ class Store{
         return newProduct;
     }
     
+    editProduct(id, payload){
+        let product = this.getProductById(id);
+        product.name = payload.name;
+        product.category = payload.category;
+        product.price = payload.price;
+        product.units = payload.units;
+        return product;
+    }
+
     delCategory(id){
         var categoryToEliminate = this.getCategoryById(id);
         if(this.getProductsByCategory(id).length === 0){

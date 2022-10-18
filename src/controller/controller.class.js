@@ -17,23 +17,99 @@ class Controller{
         this.prodctStore.loadData();
         let produtList = this.prodctStore.products;
         produtList.forEach(element => {
-            this.addProductToStore(element);
+            this.viewStore.renderNewProduct(element);
+            this.calculateTotalImport();
+            this.setEventListeners(element);
         });
         this.calculateTotalImport();
         this.addCategories(this.prodctStore.categories);
+    }
+    
+    setEventListeners(newProd){
+        let fila = document.getElementById(newProd.id);
+            
+        fila.querySelector(".delete").addEventListener('click', () =>{
+            this.deleteProductFromStore(newProd.id);
+        })
+
+        fila.querySelector(".up").addEventListener('click', () =>{
+            this.plus1UnitProd(newProd.id);
+
+        })
+
+        fila.querySelector(".down").addEventListener('click', () =>{
+            this.extract1UnitToProd(newProd.id);
+
+        })
+
+        fila.querySelector(".edit").addEventListener('click', () =>{
+            this.editProduct(newProd.id);
+            document.getElementById('new-prod').parentElement.classList.remove('hideElement');
+        })
     }
 
     addProductToStore(newProduct){
         try{
             const newProd = this.prodctStore.addProduct(newProduct);
             this.viewStore.renderNewProduct(newProd);
-            console.log("objeto añadido");
             this.calculateTotalImport();
+            this.setEventListeners(newProd);
+            this.viewStore.cleanForm();
         }catch(err){
             this.viewStore.renderMessege(err)
         }        
     }
-    
+
+    editProduct(idProduct){
+        let product = this.prodctStore.getProductById(idProduct);
+        this.viewStore.renderProductForm(product);
+        this.calculateTotalImport();
+    }
+
+    editInnerProduct(id, payload){
+        try{    
+            let editedProd = this.prodctStore.editProduct(id, payload);
+            this.viewStore.renderEditedProd(editedProd);
+            this.calculateTotalImport();
+                let fila = document.getElementById(editedProd.id);
+                
+                fila.querySelector(".delete").addEventListener('click', () =>{
+                    this.deleteProductFromStore(editedProd.id);
+                })
+
+                fila.querySelector(".up").addEventListener('click', () =>{
+                    this.plus1UnitProd(editedProd.id);
+
+                })
+
+                fila.querySelector(".down").addEventListener('click', () =>{
+                    this.extract1UnitToProd(editedProd.id);
+
+                })
+
+                fila.querySelector(".edit").addEventListener('click', () =>{
+                    this.editProduct(editedProd.id);
+
+                })
+            this.viewStore.cleanForm();
+            this.calculateTotalImport();
+            }catch(err){
+                this.viewStore.renderMessege(err)
+        }
+    }
+
+    plus1UnitProd(idProd){
+        let prod = this.prodctStore.sum1UnitToProd(idProd);
+        this.viewStore.renderEditedProd(prod);
+        this.calculateTotalImport();
+    }
+
+    extract1UnitToProd(idProd){
+        let prod = this.prodctStore.extract1UnitToProd(idProd);
+        this.viewStore.renderEditedProd(prod);
+        this.calculateTotalImport();
+    }
+
     calculateTotalImport(){
         let totalImport = this.prodctStore.totalImport();
         this.viewStore.renderTotalImport(totalImport);
@@ -61,6 +137,7 @@ class Controller{
     
     deleteProductFromStore(idProduct){
         try{
+
             this.prodctStore.delProduct(idProduct);
             this.viewStore.delProduct(idProduct);
             this.calculateTotalImport();
@@ -78,6 +155,26 @@ class Controller{
             this.viewStore.renderMessege(err)
         }
         
+    }
+
+    apperAddProduct(){
+        this.viewStore.apperAddProductView();
+    }
+
+    apperAddcategory(){
+        this.viewStore.apperAddCategoryView();
+    }
+
+    apperAboutUs(){
+        this.viewStore.apperAboutUsView();
+    }
+
+    apperProductList(){
+        this.viewStore.apperProductListView();
+    }
+    
+    apperCategoryList(){
+        this.viewStore.apperCategoryListView();
     }
 }
 
