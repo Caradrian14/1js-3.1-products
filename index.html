@@ -77,31 +77,36 @@
 		<!-- Acciones sobre el almacén -->
 		<div class="row">
 			<div class="col-sm-6 col-md-4 col-lg-4 hideElement">
-				<form id="new-prod">
+				<form id="new-prod" novalidate>
 					<fieldset>
 						<legend class="bg-dark text-white text-center">Edición producto</legend>
 						<!-- Aquí los inputs y botones del form -->
 						<div class="form-group">
 							<label for="newprod-id">ID:</label>
 							<input type="text" id="newprod-id" class="form-control" disabled>
+							<span class="error"></span>
 						</div>
 						<div class="form-group">
 							<label for="newprod-name">Nombre:</label>
-							<input type="text" id="newprod-name" class="form-control">
+							<input type="text" id="newprod-name" class="form-control" minlength="5" maxlength="50" required>
+							<span class="error"></span>
 						</div>
 						<div class="form-group">
 							<label for="newprod-cat">Categoría:</label>
-							<select class="form-control" id="newprod-cat">
+							<select class="form-control" id="newprod-cat" required>
 								<option value="" disabled>--- Selecciona categoría ---</option>
-								</select>
+							</select>
+							<span class="error"></span>
 						</div>
 						<div class="form-group">
 							<label for="newprod-units">Unidades.:</label>
-							<input type="number" id="newprod-units" class="form-control">
+							<input type="number" id="newprod-units" class="form-control" min="0" max="100">
+							<span class="error"></span>
 						</div>
 						<div class="form-group">
 							<label for="newprod-price">Precio/u.:</label>
-							<input type="number" id="newprod-price" class="form-control">
+							<input type="number" id="newprod-price" class="form-control" min="0" step=".01" required>
+							<span class="error"></span>
 						</div>
 						<br>
 						<button type="submit" class="btn btn-default btn-dark">Aplicar</button>

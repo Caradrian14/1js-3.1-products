@@ -178,6 +178,19 @@ class Store{
         return productsBelowUnits;
     }
 
+    sameName2products(name, id){
+        if(id === ''){
+            let prod = this.products.find(product => product.name === name);
+            if(prod){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
     toString(){
         return  this.name + " => " + this.products.length + ": " + this.totalImport + " \n" +
         this.products.forEach(element => {
