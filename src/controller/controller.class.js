@@ -12,10 +12,10 @@ class Controller{
         this.viewStore = new View();
     }
 
-    init(){
-        this.setEventListeners();
+    async init(){
+        this.setEventListenersNav();
         this.viewStore.init();
-        this.prodctStore.loadData();
+        await this.prodctStore.loadData();
         let produtList = this.prodctStore.products;
         produtList.forEach(element => {
             this.viewStore.renderNewProduct(element);
@@ -49,10 +49,9 @@ class Controller{
         })
     }
 
-    addProductToStore(newProduct){
+    async addProductToStore(newProduct){
         try{
-            
-            const newProd = this.prodctStore.addProduct(newProduct);
+            const newProd = await this.prodctStore.addProduct(newProduct);
             this.viewStore.renderNewProduct(newProd);
             this.calculateTotalImport();
             this.setEventListeners(newProd);
@@ -68,31 +67,11 @@ class Controller{
         this.calculateTotalImport();
     }
 
-    editInnerProduct(id, payload){
+    async editInnerProduct(id, payload){
         try{    
-            let editedProd = this.prodctStore.editProduct(id, payload);
+            let editedProd = await this.prodctStore.editProduct(id, payload);
             this.viewStore.renderEditedProd(editedProd);
             this.calculateTotalImport();
-                let fila = document.getElementById(editedProd.id);
-                
-                fila.querySelector(".delete").addEventListener('click', () =>{
-                    this.deleteProductFromStore(editedProd.id);
-                })
-
-                fila.querySelector(".up").addEventListener('click', () =>{
-                    this.plus1UnitProd(editedProd.id);
-
-                })
-
-                fila.querySelector(".down").addEventListener('click', () =>{
-                    this.extract1UnitToProd(editedProd.id);
-
-                })
-
-                fila.querySelector(".edit").addEventListener('click', () =>{
-                    this.editProduct(editedProd.id);
-
-                })
             this.viewStore.cleanForm();
             this.calculateTotalImport();
             }catch(err){
@@ -100,14 +79,14 @@ class Controller{
         }
     }
 
-    plus1UnitProd(idProd){
-        let prod = this.prodctStore.sum1UnitToProd(idProd);
+    async plus1UnitProd(idProd){
+        let prod = await this.prodctStore.sum1UnitToProd(idProd);
         this.viewStore.renderEditedProd(prod);
         this.calculateTotalImport();
     }
 
-    extract1UnitToProd(idProd){
-        let prod = this.prodctStore.extract1UnitToProd(idProd);
+    async extract1UnitToProd(idProd){
+        let prod = await this.prodctStore.extract1UnitToProd(idProd);
         this.viewStore.renderEditedProd(prod);
         this.calculateTotalImport();
     }
@@ -137,10 +116,10 @@ class Controller{
         }        
     }
     
-    deleteProductFromStore(idProduct){
+    async deleteProductFromStore(idProduct){
         try{
 
-            this.prodctStore.delProduct(idProduct);
+            await this.prodctStore.delProduct(idProduct);
             this.viewStore.delProduct(idProduct);
             this.calculateTotalImport();
         }catch(err){
@@ -179,7 +158,7 @@ class Controller{
         this.viewStore.apperCategoryListView();
     }
 
-    setEventListeners(){
+    setEventListenersNav(){
         window.addEventListener('load', () => {
             this.setListenersValidity();
 

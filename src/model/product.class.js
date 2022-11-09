@@ -13,6 +13,18 @@ class Product{
         }
         
     }
+    getId(){
+        return this.id;
+    }
+    getName(){
+        return this.name;
+    }
+    getUnits(){
+        return this.units;
+    }
+    getPrice(){
+        return this.price;
+    }
     getCategory(){
         return this.category;
     }

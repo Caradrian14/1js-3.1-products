@@ -1,6 +1,6 @@
 'use strict';
 const json = require ('./datosIni.json');
-
+const SERVER = 'http://localhost:3000';
 const { prototype } = require('./category.class');
 const Category = require('./category.class');
 const Product = require('./product.class');
@@ -15,23 +15,70 @@ class Store{
     
     }
 
-    sum1UnitToProd(idProd){
+    async sum1UnitToProd(idProd){
         let prod = this.getProductById(idProd);
-        prod.units++;
+        let newUnits = ++prod.units;
+        const response = await fetch(SERVER + "/products/"+ idProd, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                units: newUnits
+            }),
+            headers:{
+                'Content-Type': 'application/json'
+              }
+        });
+        if(!response.ok){
+            throw `Error ${response.status}`
+        }
+        const jsonData = await response.json();
+        prod.units = jsonData.units;
         return prod;
     }
 
-    extract1UnitToProd(idProd){
+    async extract1UnitToProd(idProd){
         let prod = this.getProductById(idProd);
         if(prod.units > 0){
-            prod.units--;
+            --prod.units
         }
+        const response = await fetch(SERVER + "/products/"+ idProd, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                units: prod.units
+            }),
+            headers:{
+                'Content-Type': 'application/json'
+              }
+        });
+        if(!response.ok){
+            throw `Error ${response.status}`
+        }
+        const jsonData = await response.json();
+        prod.units = jsonData.units;
         return prod;
     }
 
-    loadData(){
-        json.categories.forEach(categoria => {this.addCategory(categoria.name, categoria.description)});
-        json.products.forEach(product => {this.addProduct(product)});
+    async loadData(){
+        // json.categories.forEach(categoria => {this.addCategory(categoria.name, categoria.description)});
+        // json.products.forEach(product => {this.addProduct(product)});
+
+        const response = await fetch(SERVER + "/categories");
+        if(!response.ok){
+            throw `Error ${response.status}`
+        }
+        const jsonData = await response.json();
+        jsonData.forEach((element) => {
+            this.addCategory(element.name, element.description)
+        });
+
+        
+        const response2 = await fetch(SERVER + "/products");
+        if(!response2.ok){
+            throw `Error ${response2.status}`
+        }
+        const jsonData2 = await response2.json();
+        await jsonData2.forEach((element)  => {
+            this.addProduct(element)
+        })
     }
 
     getCategoryById(id){
@@ -96,7 +143,8 @@ class Store{
         return newCategory;
     }
 
-    addProduct(payload){
+    //Refactorizar
+    async addProduct(payload){
         if(!payload.name || 
             !payload.category || 
             !payload.price ||
@@ -108,12 +156,13 @@ class Store{
             ){
                 throw "Datos incorrectos";
             }
+            
         //Compribamos si existe Categoria, lanzaria Error en get
         var category
         category = this.getCategoryById(payload.category);
         
+        /*MIRAR DE OBTENER EL ID AL AÑADIR UN NUEVO PROD */
         //definimos el maximo id
-
         var enconctrarMax = function(array){
             var max = 0;
             array.forEach(element => {
@@ -123,20 +172,55 @@ class Store{
             });
             return max;
         }
-        var maximoId = enconctrarMax(this.products);
-
-        //Construir el objeto
-        var newProduct = new Product(maximoId +1, payload.name, payload.category, payload.price, payload.units);
-        this.products.push(newProduct);
+        if(!payload.id){
+            payload.id = enconctrarMax(this.products);
+            //Construir el objeto
+            var newProduct = new Product(++payload.id, payload.name, payload.category, payload.price, payload.units);
+            this.products.push(newProduct);
+            await fetch(SERVER + '/products', {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: newProduct.name,
+                    category : newProduct.category,
+                    price : newProduct.price,
+                    units: newProduct.units
+                    }),
+                    headers:{
+                    'Content-Type': 'application/json'
+                }
+            });
+        }else{
+            var newProduct = new Product(payload.id, payload.name, payload.category, payload.price, payload.units);
+            this.products.push(newProduct);
+        }
+        
         return newProduct;
     }
     
-    editProduct(id, payload){
+    async editProduct(id, payload){
         let product = this.getProductById(id);
-        product.name = payload.name;
-        product.category = payload.category;
-        product.price = payload.price;
-        product.units = payload.units;
+        const response = await fetch(SERVER + '/products/' + id, {
+            method: 'PUT',
+            body: JSON.stringify({
+                id: id,
+                name: payload.name,
+                category : payload.category,
+                price : payload.price,
+                units: payload.units
+            }),
+            headers:{
+                'Content-Type': 'application/json'
+              }
+        });
+        if(!response.ok){
+            throw `Error ${response.status}`
+        }
+        const jsonData = await response.json();
+
+        product.name = jsonData.name;
+        product.category = jsonData.category;
+        product.price = jsonData.price;
+        product.units = jsonData.units;
         return product;
     }
 
@@ -149,10 +233,13 @@ class Store{
         throw "Error, la categoria tiene productos registrados";
     }
 
-    delProduct(id){
+    async delProduct(id){
         var productToEliminate = this.getProductById(id);
         if(productToEliminate.units < 1){
             this.products = this.products.filter(product => product.id != id);
+            await fetch(SERVER + '/products/' + id, {
+                method: 'DELETE'
+            });
             return productToEliminate;
         }
         throw "Error, el producto tiene unidades en Stock";
