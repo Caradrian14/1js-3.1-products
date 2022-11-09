@@ -13,40 +13,47 @@ class Controller{
     }
 
     async init(){
-        this.setEventListenersNav();
-        this.viewStore.init();
-        await this.prodctStore.loadData();
-        let produtList = this.prodctStore.products;
-        produtList.forEach(element => {
-            this.viewStore.renderNewProduct(element);
+        try{
+            this.setEventListenersNav();
+            await this.prodctStore.loadData();
+            let produtList = this.prodctStore.products;
+            produtList.forEach(element => {
+                this.viewStore.renderNewProduct(element);
+                this.calculateTotalImport();
+                this.setEventListeners(element);
+            });
             this.calculateTotalImport();
-            this.setEventListeners(element);
-        });
-        this.calculateTotalImport();
-        this.addCategories(this.prodctStore.categories);
+            this.addCategories(this.prodctStore.categories);
+        }catch(err){
+            this.viewStore.renderMessege(err)
+        }
     }
     
     setEventListeners(newProd){
         let fila = document.getElementById(newProd.id);
-            
-        fila.querySelector(".delete").addEventListener('click', () =>{
-            this.deleteProductFromStore(newProd.id);
-        })
-
-        fila.querySelector(".up").addEventListener('click', () =>{
-            this.plus1UnitProd(newProd.id);
-
-        })
-
-        fila.querySelector(".down").addEventListener('click', () =>{
-            this.extract1UnitToProd(newProd.id);
-
-        })
-
-        fila.querySelector(".edit").addEventListener('click', () =>{
-            this.editProduct(newProd.id);
-            document.getElementById('new-prod').parentElement.classList.remove('hideElement');
-        })
+           try{
+            fila.querySelector(".delete").addEventListener('click', () =>{
+                this.deleteProductFromStore(newProd.id);
+            })
+    
+            fila.querySelector(".up").addEventListener('click', () =>{
+                this.plus1UnitProd(newProd.id);
+    
+            })
+    
+            fila.querySelector(".down").addEventListener('click', () =>{
+                this.extract1UnitToProd(newProd.id);
+    
+            })
+    
+            fila.querySelector(".edit").addEventListener('click', () =>{
+                this.editProduct(newProd.id);
+                document.getElementById('new-prod').parentElement.classList.remove('hideElement');
+            })
+        }catch(err){
+            this.viewStore.renderMessege(err)
+        }
+        
     }
 
     async addProductToStore(newProduct){
@@ -74,8 +81,8 @@ class Controller{
             this.calculateTotalImport();
             this.viewStore.cleanForm();
             this.calculateTotalImport();
-            }catch(err){
-                this.viewStore.renderMessege(err)
+        }catch(err){
+            this.viewStore.renderMessege(err)
         }
     }
 

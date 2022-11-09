@@ -28,7 +28,7 @@ class Store{
               }
         });
         if(!response.ok){
-            throw `Error ${response.status}`
+            throw `Error ${response.status} de la BBDD: ${response.statusText}`
         }
         const jsonData = await response.json();
         prod.units = jsonData.units;
@@ -50,7 +50,7 @@ class Store{
               }
         });
         if(!response.ok){
-            throw `Error ${response.status}`
+            throw `Error ${response.status} de la BBDD: ${response.statusText}`
         }
         const jsonData = await response.json();
         prod.units = jsonData.units;
@@ -63,7 +63,7 @@ class Store{
 
         const response = await fetch(SERVER + "/categories");
         if(!response.ok){
-            throw `Error ${response.status}`
+            throw `Error ${response.status} de la BBDD: ${response.statusText}`
         }
         const jsonData = await response.json();
         jsonData.forEach((element) => {
@@ -73,7 +73,7 @@ class Store{
         
         const response2 = await fetch(SERVER + "/products");
         if(!response2.ok){
-            throw `Error ${response2.status}`
+            throw `Error ${response2.status} de la BBDD: ${response2.statusText}`
         }
         const jsonData2 = await response2.json();
         await jsonData2.forEach((element)  => {
@@ -177,7 +177,7 @@ class Store{
             //Construir el objeto
             var newProduct = new Product(++payload.id, payload.name, payload.category, payload.price, payload.units);
             this.products.push(newProduct);
-            await fetch(SERVER + '/products', {
+            const response = await fetch(SERVER + '/products', {
                 method: 'POST',
                 body: JSON.stringify({
                     name: newProduct.name,
@@ -189,6 +189,9 @@ class Store{
                     'Content-Type': 'application/json'
                 }
             });
+            if(!response.ok){
+                throw `Error ${response.status} de la BBDD: ${response.statusText}`
+            }
         }else{
             var newProduct = new Product(payload.id, payload.name, payload.category, payload.price, payload.units);
             this.products.push(newProduct);
@@ -213,7 +216,7 @@ class Store{
               }
         });
         if(!response.ok){
-            throw `Error ${response.status}`
+            throw `Error ${response.status} de la BBDD: ${response.statusText}`
         }
         const jsonData = await response.json();
 
@@ -237,9 +240,12 @@ class Store{
         var productToEliminate = this.getProductById(id);
         if(productToEliminate.units < 1){
             this.products = this.products.filter(product => product.id != id);
-            await fetch(SERVER + '/products/' + id, {
+            const response =await fetch(SERVER + '/products/' + id, {
                 method: 'DELETE'
             });
+            if(!response.ok){
+                throw `Error ${response.status} de la BBDD: ${response.statusText}`
+            }
             return productToEliminate;
         }
         throw "Error, el producto tiene unidades en Stock";
