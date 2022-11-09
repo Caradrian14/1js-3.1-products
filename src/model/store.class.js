@@ -157,12 +157,11 @@ class Store{
                 throw "Datos incorrectos";
             }
             
-        //Compribamos si existe Categoria, lanzaria Error en get
+        //Compribamos si existe Categoria, lanzaria Error en getCategoryById
         var category
         category = this.getCategoryById(payload.category);
         
         /*MIRAR DE OBTENER EL ID AL AÑADIR UN NUEVO PROD */
-        //definimos el maximo id
         var enconctrarMax = function(array){
             var max = 0;
             array.forEach(element => {
@@ -172,6 +171,8 @@ class Store{
             });
             return max;
         }
+
+        //Miramos si tiene Id
         if(!payload.id){
             payload.id = enconctrarMax(this.products);
             //Construir el objeto

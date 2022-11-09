@@ -173,7 +173,7 @@ class Controller{
             document.getElementById('new-prod').addEventListener('submit', (event) => {
               event.preventDefault()
               if(!document.getElementById('new-prod').checkValidity()){
-                
+
                 return;
             }
               // Aquí el código para obtener los datos del formulario
